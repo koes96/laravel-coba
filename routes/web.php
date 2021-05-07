@@ -3,6 +3,9 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TesController;
 use App\Http\Livewire\ShowPosts;
+use App\Http\Livewire\Post\Create;
+use App\Http\Livewire\Post\Edit;
+use App\Http\Livewire\Post\Index;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,6 +28,13 @@ Route::get('user-datatables', function () {
 Auth::routes();
 
 Route::middleware(['auth'])->namespace('Admin')->group(function () {
+
+    //Route::view('users','livewire.home');
+
+    //Livewire
+    Route::get('/post', [Index::class, 'render'])->name('post.index');
+    Route::get('/create', [Create::class, 'render'])->name('post.create');
+    Route::get('/edit/{id}', [Edit::class, 'render'])->name('post.edit');
 
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
     Route::get('/tes', [TesController::class, 'index'])->name('tes');

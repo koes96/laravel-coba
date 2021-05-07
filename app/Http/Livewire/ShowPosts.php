@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
+use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 use Mediconesystems\LivewireDatatables\Column;
 use Mediconesystems\LivewireDatatables\NumberColumn;
@@ -47,6 +48,7 @@ class ShowPosts extends Component
     public function getUser(Request $request, User $user)
     {
         $data = $user->getData();
+        //$data = User::select(['name', 'email', 'created_at']);
         return \DataTables::of($data)
             ->addColumn('Actions', function ($data) {
                 return '<button type="button" class="btn btn-success btn-sm" id="getEditArticleData" data-id="' . $data->id . '">Edit</button>

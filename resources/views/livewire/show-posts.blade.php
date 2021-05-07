@@ -1,6 +1,18 @@
 <div class="card">
     <div class="card-body">
     {{ $judul }}
+    
+    <div class="alert alert-danger alert-dismissible fade show" role="alert" style="display: none;">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="alert alert-success alert-dismissible fade show" role="alert" style="display: none;">
+        <strong>Success!</strong>Article was added successfully.
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
     <button class="btn btn-info btn-sm" type="button"  data-toggle="modal" data-target="#CreateArticleModal">
         Create Article
     </button>
@@ -15,13 +27,6 @@
           </tr>
         </thead>
         <tbody>
-            @foreach ($user as $users )
-            <tr>
-                <td>{{ $users->id }}</td>
-                <td>{{ $users->name }}</td>
-                <td>{{ $users->email }}</td>
-              </tr>
-            @endforeach
         </tbody>
       </table>
     </div>
@@ -35,22 +40,11 @@
         <div class="modal-content">
             <!-- Modal Header -->
             <div class="modal-header">
-                <h4 class="modal-title">Article Create</h4>
+                <h4 class="modal-title">Create</h4>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <!-- Modal body -->
             <div class="modal-body">
-                <div class="alert alert-danger alert-dismissible fade show" role="alert" style="display: none;">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="alert alert-success alert-dismissible fade show" role="alert" style="display: none;">
-                    <strong>Success!</strong>Article was added successfully.
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
                 <div class="form-group">
                     <label for="name">Nama:</label>
                     <input type="text" class="form-control" name="name" id="name">
@@ -79,22 +73,11 @@
         <div class="modal-content">
             <!-- Modal Header -->
             <div class="modal-header">
-                <h4 class="modal-title">Article Edit</h4>
+                <h4 class="modal-title">Edit</h4>
                 <button type="button" class="close modelClose" data-dismiss="modal">&times;</button>
             </div>
             <!-- Modal body -->
             <div class="modal-body">
-                <div class="alert alert-danger alert-dismissible fade show" role="alert" style="display: none;">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="alert alert-success alert-dismissible fade show" role="alert" style="display: none;">
-                    <strong>Success!</strong>Article was added successfully.
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
                 <div id="EditArticleModalBody">
                     
                 </div>
@@ -114,12 +97,12 @@
         <div class="modal-content">
             <!-- Modal Header -->
             <div class="modal-header">
-                <h4 class="modal-title">Article Delete</h4>
+                <h4 class="modal-title">Delete</h4>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <!-- Modal body -->
             <div class="modal-body">
-                <h4>Are you sure want to delete this Article?</h4>
+                <h4>Are you sure want to delete this Data?</h4>
             </div>
             <!-- Modal footer -->
             <div class="modal-footer">
@@ -149,6 +132,9 @@
                 {data: 'name', name: 'name'},
                 {data: 'email', name: 'email'},
                 {data: 'Actions', name: 'Actions',orderable:false,serachable:false,sClass:'text-center'},
+            ],
+            buttons: [
+                'copy', 'excel', 'pdf'
             ]
         });
 
@@ -178,12 +164,16 @@
                     } else {
                         $('.alert-danger').hide();
                         $('.alert-success').show();
-                        $('.datatable').DataTable().ajax.reload();
+                        $('#CreateArticleModal').modal('hide');
                         setInterval(function(){ 
                             $('.alert-success').hide();
-                            $('#CreateArticleModal').modal('hide');
                             //location.reload();
                         }, 2000);
+                        $('.modal-backdrop').hide();
+                        $('.datatable').DataTable().ajax.reload();
+                        $('#name').val('');
+                        $('#email').val('');
+                        $('#pass').val('');
                     }
                 }
             });
@@ -243,10 +233,17 @@
                         $('.datatable').DataTable().ajax.reload();
                         setInterval(function(){ 
                             $('.alert-success').hide();
-                            //$('#EditArticleModal').hide();
                         }, 2000);
+                        $('#EditArticleModal').hide();
                     }
-                }
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+    			
+                $('#EditArticleModal').hide();
+                $('.alert-danger').text('Inputan yang anda masukan sudah ada').show(); //change button text
+	    		//$('#btnSaveaccessmenu').attr('disabled', false); //set button enable 
+
+		}
             });
         });
         // Delete article Ajax request.
@@ -270,14 +267,15 @@
                         $('.datatable').DataTable().ajax.reload();
                         $('#DeleteArticleModal').hide();
                     }, 1000);*/
-                    $('.alert-danger').hide();
+                        $('.alert-danger').hide();
                         $('.alert-success').show();
                         $('.datatable').DataTable().ajax.reload();
+                        $('#DeleteArticleModal').hide();
                         setInterval(function(){ 
                             $('.alert-success').hide();
-                            $('.modal-backdrop').hide();
-                            $('#DeleteArticleModal').hide();
                         }, 2000);
+                        $('.modal-backdrop').hide();
+                        $('.datatable').DataTable().ajax.reload();
                 }
             });
         });

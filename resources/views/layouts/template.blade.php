@@ -27,6 +27,9 @@
     <!-- Custom styles for this template-->
     <link href="{{ asset('plugin') }}/css/app.css" rel="stylesheet">
 
+    
+    <script src="{{ mix('js/app.js') }}"></script>
+
     @yield('css-plugins')
     @yield('css-script')
     @livewireStyles
@@ -49,6 +52,11 @@
                 <div class="page-content">
                     <!-- Page Heading -->
                     <h1 class="h3 mb-4 text-gray-800">{{ $pageTitle ?? 'Dashboard' }}</h1>
+                    @if (session()->has('message'))
+                        <div class="alert alert-success">
+                            {{session('message')}}
+                        </div>
+                    @endif
                     @yield('content')
                 </div>
                 <!-- /.container-fluid -->
@@ -108,6 +116,7 @@
     <script src="{{ asset('plugin') }}/plugins/simplebar/js/simplebar.min.js"></script>
     <script src="{{ asset('plugin') }}/plugins/metismenu/js/metisMenu.min.js"></script>
     <script src="{{ asset('plugin') }}/plugins/perfect-scrollbar/js/perfect-scrollbar.js"></script>
+
 
 
     <script type="text/javascript">
